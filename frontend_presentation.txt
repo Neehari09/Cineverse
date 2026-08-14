@@ -1,0 +1,141 @@
+================================================================================
+                      CINEVERSE - FRONTEND DOCUMENTATION
+================================================================================
+
+1. WHAT WE USED (Frontend Technology Stack)
+--------------------------------------------------------------------------------
+- Framework & Core: React 19 with Vite (Fast module bundler and development server).
+- Routing: React Router DOM (v7) for client-side Single Page Application (SPA) navigation.
+- HTTP Client: Axios (for connecting to Django REST Backend with JWT tokens) & Native Fetch API.
+- AI Integration: Groq Cloud API running Llama 3.1 8B Instant model (`llama-3.1-8b-instant`) powering CineBot AI.
+- External Data APIs: 
+  * TMDB API (The Movie Database) - Fetches real-time movie lists, genres, trailers, posters, search results, Bollywood & Tollywood movies.
+  * Google OAuth (@react-oauth/google & jwt-decode) - For Google login integration.
+- UI & Styling: Custom Vanilla CSS3 with glassmorphism effects, gradient themes, responsive flexbox/grid layouts, toast notifications, floating chat modal, and interactive seat selection grid.
+- State Management & Storage: React useState/useEffect/useRef hooks and Browser LocalStorage (storing access_token, refresh_token, user details).
+
+
+2. API CALLS AND WHAT THEY DO
+--------------------------------------------------------------------------------
+A) DJANGO BACKEND APIs (src/api/backend.js):
+   - registerUser(username, email, password):
+     * Endpoint: POST /api/auth/register/
+     * Purpose: Registers a new user account in our Django backend.
+   - loginUser(username, password):
+     * Endpoint: POST /api/auth/login/
+     * Purpose: Authenticates the user and receives JWT access & refresh tokens. Stores access_token and refresh_token in localStorage.
+   - createBooking(bookingData):
+     * Endpoint: POST /api/bookings/
+     * Purpose: Sends movie title, cinema, show date, show time, format, seat numbers, amount, and booking code to backend with Bearer JWT Authorization header.
+   - getBookings():
+     * Endpoint: GET /api/bookings/
+     * Purpose: Retrieves all previous and upcoming bookings of the logged-in user to display on the "My Bookings" page.
+
+B) TMDB (THE MOVIE DATABASE) APIs (src/api/tmdb.js):
+   - getNowPlayingMovies(): Fetches movies currently playing in theaters.
+   - getPopularMovies(): Fetches trending and popular movies globally.
+   - getTopRatedMovies(): Fetches top-rated classic and modern movies.
+   - getUpcomingMovies(): Fetches upcoming movie releases.
+   - getBollywoodMovies(): Discover Hindi language movies sorted by popularity.
+   - getTollywoodMovies(): Discover Telugu language movies sorted by popularity.
+   - searchMovies(query, page): Searches movies dynamically based on user input.
+   - discoverByGenre(genreId, page): Filters movies by selected genre (Action, Sci-Fi, Drama, etc.).
+   - getGenres(): Fetches the list of all available movie genres from TMDB.
+   - getMovieVideos(movieId): Fetches official YouTube trailer key for a movie.
+   - getMovieDetails(movieId): Fetches complete details (synopsis, runtime, rating, release date).
+
+C) GROQ AI CHATBOT API (src/components/AIChatbox.jsx):
+   - Endpoint: POST https://api.groq.com/openai/v1/chat/completions
+   - Headers: 
+     * Authorization: Bearer VITE_GROQ_API_KEY
+     * Content-Type: application/json
+   - Request Body:
+     * model: "llama-3.1-8b-instant"
+     * messages: Conversation history array including SYSTEM_PROMPT + user/assistant messages
+     * temperature: 0.7
+     * max_tokens: 512
+   - Purpose: Sends conversation history to Llama-3.1-8b-instant model to provide real-time AI recommendations, film trivia, and CineVerse assistance.
+
+
+3. DETAILED IMPLEMENTATION OF AI CHATBOX (CineBot)
+--------------------------------------------------------------------------------
+How CineBot AI is built step-by-step in `src/components/AIChatbox.jsx`:
+
+1. Global Floating Component:
+   - Rendered at top-level in `App.jsx`, making it accessible on every screen via a fixed bottom-right floating button.
+2. Component State Management (`useState`):
+   - `isOpen`: Controls opening/closing of the chat modal.
+   - `messages`: UI array storing user and AI text bubbles.
+   - `apiHistory`: Array maintaining the exact payload sent to Groq AI (System Prompt + User Messages + AI Answers).
+   - `input`: Text input field state.
+   - `loading`: Boolean state displaying "CineBot is thinking..." typing animation while API request is in-flight.
+3. System Prompt & Guardrails (AI Rules):
+   - We set a strict `SYSTEM_PROMPT` instructing the AI:
+     "You are CineBot, a strict movie discovery assistant for CineVerse. You ONLY answer questions related to movies, TV shows, cinema, directors, actors, and the CineVerse app itself. If asked non-movie questions, decline politely."
+   - This prevents generic off-topic usage and keeps CineBot 100% focused on movies.
+4. Async API Handling & Error Boundaries:
+   - Uses `async/await` with `fetch()` to post to Groq's OpenAI-compatible completions endpoint.
+   - Reads `VITE_GROQ_API_KEY` from `.env`.
+   - Uses `try/catch` to gracefully catch errors (like missing key or network issues) and output friendly error messages inside the chat.
+5. Auto-Scroll UX (`useRef` & `useEffect`):
+   - Attached a ref (`chatBodyRef`) to the scroll container. On every state update to `messages` or `loading`, `scrollTop` is set to `scrollHeight` so the latest text is always visible.
+
+
+4. HOW IT WORKS (Step-by-Step System Flow)
+--------------------------------------------------------------------------------
+- Landing & Navigation (App.jsx & Navbar.jsx):
+  * The user lands on the Home page (/). Navigation bar provides links to Home, Movies, Events, My Bookings, and Login/Profile.
+- Movie Exploration (Home.jsx & Movies.jsx):
+  * Movies are dynamically fetched live from TMDB API. Users can search movies in real-time, click category tabs (Now Playing, Popular, Bollywood, Tollywood), or filter by genres.
+- Booking Flow (BookNow.jsx & SelectSeats.jsx):
+  * Step 1: User clicks "Book Now" on any movie card.
+  * Step 2: On BookNow page, user selects Cinema Theater, Format (2D, 3D, IMAX), Date, and Show Time, and views official movie trailers.
+  * Step 3: User proceeds to SelectSeats page to choose seats on an interactive cinema hall seat grid (Rows A-G, Seats 1-8). Total price updates dynamically based on seat count.
+  * Step 4: Clicking "Confirm & Pay" sends the booking request to Django REST backend with JWT authentication. A unique booking code (e.g. CV-982341) is generated.
+- My Bookings Dashboard (Mybookings.jsx):
+  * Displays digital tickets with cinema name, movie poster, date, time, format, assigned seats, and total price paid.
+- CineBot AI Assistant (AIChatbox.jsx):
+  * Persistent floating widget. Powered by Groq's Llama 3.1 instant model for live conversation.
+
+
+5. HOW TO RUN THE FRONTEND
+--------------------------------------------------------------------------------
+1. Open terminal in project root directory: `c:\Users\user\OneDrive\Desktop\cineverse`
+2. Install dependencies:
+   npm install
+3. Ensure `.env` file exists with required keys:
+   VITE_TMDB_API_KEY=20d674f61d857abf9629df7c4c8539f3
+   VITE_GOOGLE_CLIENT_ID=...
+   VITE_GROQ_API_KEY=gsk_...
+4. Start development server:
+   npm run dev
+5. Open browser at: http://localhost:5173/
+
+
+================================================================================
+                      FRONTEND PRESENTATION SCRIPT
+      (Read this during your presentation for the Frontend section!)
+================================================================================
+
+"Hello everyone! Now I will walk you through the Frontend architecture of CineVerse.
+
+For our frontend, we chose React 19 paired with Vite. Vite gives us ultra-fast build times and smooth hot-reloading during development. We structured the user interface as a modern Single Page Application using React Router DOM, which means navigation between pages happens instantly without annoying full-page browser reloads.
+
+Let's look at how the frontend interacts with data. We use two main data streams:
+First, for real-time movie content, we integrated the official TMDB API. Through our custom TMDB service module, we fetch live lists of Now Playing movies, Popular hits, Upcoming releases, as well as dedicated filters for regional cinema like Bollywood and Tollywood. Users can also search any movie live or filter by genres.
+
+Second, for user accounts and ticket bookings, our frontend communicates directly with our Django REST Backend using Axios. When a user logs in, we receive secure JWT access and refresh tokens, which are stored safely in the browser's localStorage and attached to every authorized backend request.
+
+Now, let me specifically highlight our AI feature — CineBot!
+We implemented CineBot as a floating React component using Groq Cloud's ultra-fast Llama 3.1 8B Instant model. 
+How did we build it? 
+1. We created a custom React chat widget (`AIChatbox.jsx`) that stays visible in the bottom corner across all pages.
+2. We configured a strict System Prompt guardrail so CineBot acts strictly as a cinephile assistant — helping users discover movies, get recommendations based on their mood, or learn movie trivia, while politely declining non-movie queries.
+3. We manage state for chat history, user inputs, and loading indicators, and use React `useRef` to automatically auto-scroll the conversation as new messages arrive.
+
+One of our other standout features on the frontend is the interactive booking flow. When a user selects a movie, they choose their theater, date, and showtime, and then transition into our custom interactive seat selection grid. Users can pick their exact seats in real time, see their price updated live, and confirm their booking with one click.
+
+Visually, we crafted the UI using modern CSS with dark mode aesthetics and glassmorphism, making CineVerse visually stunning and super easy to navigate.
+
+Thank you! Now let me pass it over to the backend overview."
+================================================================================

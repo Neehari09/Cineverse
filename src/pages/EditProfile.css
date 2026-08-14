@@ -1,0 +1,335 @@
+.ep-page {
+    --ep-bg: #0b0b12;
+    --ep-glass: rgba(255, 255, 255, 0.04);
+    --ep-glass-border: rgba(255, 255, 255, 0.08);
+    --ep-text: #f4f3f7;
+    --ep-text-dim: #a9a6b8;
+    --ep-accent: #e63950;
+    --ep-success: #10b981;
+    --ep-input-bg: rgba(0, 0, 0, 0.2);
+
+    background: var(--ep-bg);
+    color: var(--ep-text);
+    min-height: 100vh;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.ep-main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px 80px;
+}
+
+.ep-container {
+    width: 100%;
+    max-width: 500px;
+}
+
+.ep-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.ep-back-btn {
+    background: transparent;
+    border: none;
+    color: var(--ep-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    margin-left: -8px;
+}
+
+.ep-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.ep-section {
+    background: var(--ep-glass);
+    border: 1px solid var(--ep-glass-border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.ep-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 20px;
+}
+
+.ep-input-group {
+    margin-bottom: 20px;
+}
+
+.ep-input-group:last-child {
+    margin-bottom: 0;
+}
+
+.ep-input-group label {
+    display: block;
+    font-size: 13px;
+    color: var(--ep-text-dim);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.ep-input-group label .req {
+    color: var(--ep-accent);
+    margin-left: 4px;
+}
+
+.ep-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: var(--ep-input-bg);
+    border: 1px solid var(--ep-glass-border);
+    border-radius: 12px;
+    padding: 0 16px;
+    height: 48px;
+    transition: border-color 0.2s;
+}
+
+.ep-input-wrapper:focus-within {
+    border-color: var(--ep-accent);
+}
+
+.ep-input-wrapper input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--ep-text);
+    font-size: 15px;
+    font-family: inherit;
+}
+
+.ep-input-wrapper input:disabled {
+    color: var(--ep-text-dim);
+}
+
+/* For direct inputs without wrapper */
+.ep-input-group > input {
+    width: 100%;
+    background: var(--ep-input-bg);
+    border: 1px solid var(--ep-glass-border);
+    border-radius: 12px;
+    padding: 0 16px;
+    height: 48px;
+    color: var(--ep-text);
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.ep-input-group > input:focus {
+    outline: none;
+    border-color: var(--ep-accent);
+}
+
+/* Calendar styling */
+.ep-calendar-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.ep-date-input {
+    width: 100%;
+    background: var(--ep-input-bg);
+    border: 1px solid var(--ep-glass-border);
+    border-radius: 12px;
+    padding: 0 40px 0 16px;
+    height: 48px;
+    color: var(--ep-text);
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.ep-date-input:focus {
+    outline: none;
+    border-color: var(--ep-accent);
+}
+
+.ep-calendar-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ep-text-dim);
+    pointer-events: none;
+}
+
+/* Override react-datepicker */
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.react-datepicker {
+    background: #1c1524 !important;
+    border: 1px solid var(--ep-glass-border) !important;
+    border-radius: 16px !important;
+    font-family: inherit !important;
+    color: var(--ep-text) !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.react-datepicker__header {
+    background: transparent !important;
+    border-bottom: 1px solid var(--ep-glass-border) !important;
+    padding-top: 12px !important;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+    color: var(--ep-text) !important;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+    color: var(--ep-text) !important;
+}
+
+.react-datepicker__day:hover,
+.react-datepicker__month-text:hover,
+.react-datepicker__quarter-text:hover,
+.react-datepicker__year-text:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 50% !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__year-text--selected {
+    background: var(--ep-accent) !important;
+    border-radius: 50% !important;
+    color: #fff !important;
+}
+
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--keyboard-selected {
+    background: rgba(230, 57, 80, 0.2) !important;
+    border-radius: 50% !important;
+}
+.ep-status-text {
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.ep-status-text.success {
+    color: var(--ep-success);
+}
+
+.ep-status-text.danger {
+    color: var(--ep-accent);
+}
+
+/* Pills for Identity/Married */
+.ep-pill-group {
+    display: flex;
+    gap: 12px;
+}
+
+.ep-pill {
+    flex: 1;
+    background: transparent;
+    border: 1px solid var(--ep-glass-border);
+    color: var(--ep-text-dim);
+    border-radius: 12px;
+    height: 44px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ep-pill:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.ep-pill.active {
+    background: rgba(230, 57, 80, 0.15);
+    border-color: rgba(230, 57, 80, 0.5);
+    color: var(--ep-accent);
+}
+
+.ep-actions {
+    margin-top: 32px;
+}
+
+.ep-save-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--ep-accent), #b81f36);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    height: 52px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.ep-save-btn:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.ep-save-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.ep-logout-btn {
+    width: 100%;
+    background: transparent;
+    color: var(--ep-text-dim);
+    border: 1px solid var(--ep-glass-border);
+    border-radius: 12px;
+    height: 52px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 16px;
+}
+
+.ep-logout-btn:hover {
+    color: var(--ep-accent);
+    border-color: rgba(230, 57, 80, 0.5);
+    background: rgba(230, 57, 80, 0.05);
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 480px) {
+    .ep-main { padding: 20px 16px 60px; }
+    .ep-header h2 { font-size: 18px; }
+    .ep-section { padding: 16px; border-radius: 12px; }
+    .ep-section-title { font-size: 15px; margin-bottom: 16px; }
+    .ep-input-wrapper, .ep-input-group > input, .ep-date-input { height: 44px; font-size: 14px; }
+    .ep-pill { height: 40px; font-size: 13px; }
+    .ep-save-btn, .ep-logout-btn { height: 48px; font-size: 14px; }
+    .ep-actions { margin-top: 24px; }
+}

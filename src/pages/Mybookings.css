@@ -1,0 +1,460 @@
+/* ==========================================================
+   CineVerse — My Bookings
+   Same dark-glass token family as mv-* / bn-*,
+   styled as ticket stubs.
+   ========================================================== */
+
+.mb-page {
+    --mb-bg: #0b0b12;
+    --mb-glass: rgba(255, 255, 255, 0.06);
+    --mb-glass-border: rgba(255, 255, 255, 0.12);
+    --mb-glass-hover: rgba(255, 255, 255, 0.1);
+    --mb-text: #f4f3f7;
+    --mb-text-dim: #a9a6b8;
+    --mb-accent: #e63950;
+    --mb-accent-2: #f2b544;
+    --mb-green: #3ecf8e;
+
+    background: radial-gradient(circle at 85% 0%, #1c1524 0%, var(--mb-bg) 45%);
+    color: var(--mb-text);
+    min-height: 100vh;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* ---------------- PAGE TITLE ---------------- */
+.mb-page-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0 0 20px;
+    color: var(--mb-text);
+    letter-spacing: -0.5px;
+}
+
+/* ---------------- TABS ---------------- */
+.mb-tabs {
+    display: flex;
+    gap: 10px;
+    padding: 18px 32px 4px;
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.mb-tab {
+    background: var(--mb-glass);
+    border: 1px solid var(--mb-glass-border);
+    color: var(--mb-text-dim);
+    padding: 9px 18px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.mb-tab:hover {
+    background: var(--mb-glass-hover);
+    color: var(--mb-text);
+}
+
+.mb-tab.active {
+    background: linear-gradient(135deg, var(--mb-accent), #b81f36);
+    border-color: transparent;
+    color: #fff;
+}
+
+.mb-tab-count {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    font-size: 11px;
+    padding: 1px 7px;
+    font-weight: 700;
+}
+
+/* ---------------- MAIN ---------------- */
+.mb-main {
+    padding: 20px 32px 64px;
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.mb-ticket-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ---------------- TICKET CARD ---------------- */
+.mb-ticket {
+    display: flex;
+    gap: 18px;
+    background: var(--mb-glass);
+    border: 1px solid var(--mb-glass-border);
+    border-radius: 20px;
+    padding: 18px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.mb-ticket:hover {
+    transform: translateY(-4px);
+    border-color: rgba(230, 57, 80, 0.35);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+.mb-ticket-cancelled {
+    opacity: 0.55;
+}
+
+.mb-ticket-cancelled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.mb-ticket-poster {
+    width: 84px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--mb-glass-border);
+    aspect-ratio: 2 / 3;
+    align-self: flex-start;
+}
+
+.mb-ticket-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.mb-poster-fallback {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mb-text-dim);
+}
+
+.mb-ticket-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.mb-ticket-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.mb-ticket-top h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.mb-status-badge {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.mb-status-upcoming {
+    background: rgba(62, 207, 142, 0.15);
+    color: var(--mb-green);
+}
+
+.mb-status-past {
+    background: rgba(169, 166, 184, 0.15);
+    color: var(--mb-text-dim);
+}
+
+.mb-status-cancelled {
+    background: rgba(230, 57, 80, 0.15);
+    color: var(--mb-accent);
+}
+
+.mb-ticket-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 12.5px;
+    color: var(--mb-text-dim);
+    margin-bottom: 14px;
+}
+
+.mb-ticket-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* perforated ticket-stub divider */
+.mb-ticket-divider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0 -18px 14px;
+    height: 1px;
+}
+
+.mb-dashed-line {
+    flex: 1;
+    border-top: 1.5px dashed var(--mb-glass-border);
+    margin: 0 4px;
+}
+
+.mb-notch {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--mb-bg);
+    box-shadow: inset 0 0 0 1px var(--mb-glass-border);
+    flex-shrink: 0;
+}
+
+.mb-ticket-bottom {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 4px;
+}
+
+.mb-label {
+    display: block;
+    font-size: 10px;
+    color: var(--mb-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 3px;
+}
+
+.mb-ticket-seats strong,
+.mb-ticket-amount strong,
+.mb-ticket-code strong {
+    font-size: 13.5px;
+    font-weight: 700;
+}
+
+.mb-ticket-amount strong {
+    color: var(--mb-accent-2);
+}
+
+.mb-ticket-code strong {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+}
+
+.mb-ticket-qr {
+    margin-left: auto;
+}
+
+.mb-qr-real {
+    width: 78px;
+    height: 78px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mb-ticket-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--mb-glass-border);
+}
+
+.mb-action-btn {
+    background: transparent;
+    border: 1px solid var(--mb-glass-border);
+    color: var(--mb-text);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.mb-action-btn:hover {
+    background: var(--mb-glass-hover);
+}
+
+.mb-action-primary {
+    background: linear-gradient(135deg, var(--mb-accent), #b81f36);
+    border-color: transparent;
+    color: #fff;
+}
+
+.mb-action-primary:hover {
+    filter: brightness(1.08);
+}
+
+.mb-action-cancel {
+    border-color: rgba(230, 57, 80, 0.3);
+    color: var(--mb-accent);
+}
+
+.mb-action-cancel:hover {
+    background: rgba(230, 57, 80, 0.12);
+    border-color: rgba(230, 57, 80, 0.6);
+}
+
+/* ---------------- EMPTY STATE ---------------- */
+.mb-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 90px 20px;
+    color: var(--mb-text-dim);
+}
+
+.mb-empty-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--mb-glass);
+    border: 1px solid var(--mb-glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mb-accent-2);
+    margin-bottom: 6px;
+}
+
+.mb-empty h2 {
+    font-size: 17px;
+    color: var(--mb-text);
+    margin: 0;
+}
+
+.mb-empty p {
+    font-size: 13.5px;
+    margin: 0;
+    max-width: 320px;
+}
+
+.mb-empty-cta {
+    margin-top: 12px;
+    background: linear-gradient(135deg, var(--mb-accent), #b81f36);
+    color: #fff;
+    border: none;
+    padding: 11px 26px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(230, 57, 80, 0.3);
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 720px) {
+
+    .mb-header,
+    .mb-tabs,
+    .mb-main {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .mb-ticket {
+        flex-direction: column;
+    }
+
+    .mb-ticket-poster {
+        width: 100%;
+        max-width: 120px;
+    }
+
+    .mb-ticket-bottom {
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    .mb-ticket-qr {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .mb-ticket { padding: 12px; }
+    .mb-ticket-top { flex-direction: column; gap: 8px; }
+    .mb-ticket-top h3 { font-size: 15px; }
+    .mb-ticket-meta { gap: 10px; font-size: 11.5px; }
+    .mb-ticket-poster { max-width: 100px; }
+    .mb-ticket-bottom { gap: 12px; }
+    .mb-ticket-actions { flex-direction: column; }
+    .mb-action-btn { justify-content: center; width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mb-ticket {
+        transition: none;
+    }
+}
+
+/* ---------------- QR MODAL ---------------- */
+.mb-qr-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.mb-qr-modal-content {
+    background: var(--mb-bg);
+    border: 1px solid var(--mb-glass-border);
+    padding: 30px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+    animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mb-qr-modal-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--mb-text);
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.85); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

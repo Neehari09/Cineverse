@@ -1,0 +1,220 @@
+.md-page {
+    background-color: #f2f5f9;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+}
+
+.md-hero-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 480px;
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+.md-hero-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, #1A1A1A 24.97%, #1A1A1A 38.3%, rgba(26, 26, 26, 0.04) 97.47%, #1A1A1A 100%);
+}
+
+.md-hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 40px;
+    padding: 40px 20px;
+}
+
+.md-poster-col {
+    flex-shrink: 0;
+}
+
+.md-poster-container {
+    width: 260px;
+    background-color: black;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.md-poster-img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    display: block;
+}
+
+.md-poster-bottom-text {
+    background: black;
+    color: white;
+    text-align: center;
+    font-size: 13px;
+    padding: 10px;
+    font-weight: 500;
+}
+
+.md-info-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.md-title {
+    font-size: 38px;
+    font-weight: 700;
+    margin: 0 0 24px 0;
+}
+
+.md-rating-box {
+    background: #333333;
+    border-radius: 8px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: fit-content;
+    min-width: 380px;
+    gap: 40px;
+    margin-bottom: 24px;
+}
+
+.md-rating-score {
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.md-star {
+    font-size: 20px;
+}
+
+.md-rate-btn {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid white;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.md-rate-btn:hover {
+    background: white;
+    color: black;
+}
+
+.md-tags-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.md-tag {
+    background: white;
+    color: black;
+    padding: 4px 10px;
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.md-format-tag { background: #e5e5e5; }
+.md-lang-tag { background: #e5e5e5; }
+
+.md-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    margin-bottom: 32px;
+    color: #e0e0e0;
+}
+
+.md-dot { font-size: 12px; }
+
+.md-book-ticket-btn {
+    background-color: #f84464;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 48px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    width: fit-content;
+    transition: background 0.2s;
+}
+
+.md-book-ticket-btn:hover { background-color: #d13653; }
+
+.md-body {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    color: #333333;
+}
+
+.md-about-section {
+    max-width: 800px;
+}
+
+.md-about-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+}
+
+.md-about-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #4a4a4a;
+    margin: 0;
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 900px) {
+    .md-hero-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-top: 24px;
+        gap: 24px;
+    }
+
+    .md-rating-box {
+        margin: 0 auto 24px;
+        min-width: unset;
+        width: 100%;
+        max-width: 380px;
+        justify-content: space-between;
+    }
+
+    .md-tags-row, .md-meta-row {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .md-book-ticket-btn {
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .md-title { font-size: 28px; margin-bottom: 16px; }
+    .md-rating-box { padding: 12px 16px; gap: 16px; }
+    .md-rating-score { font-size: 16px; }
+    .md-rate-btn { font-size: 12px; padding: 6px 12px; }
+    .md-book-ticket-btn { padding: 14px 32px; width: 100%; }
+    .md-meta-row { font-size: 13px; }
+}

@@ -1,0 +1,110 @@
+STEP-1
+--------
+npm create vite@latest . -- --template react
+
+What this command does
+---------------------
+npm create vite@latest → Downloads and runs the latest Vite project creator.
+. → Creates the project in the current folder.
+--template react → Uses the React template.
+
+If it asks:
+Need to install the following packages:
+create-vite@latest
+Ok to proceed? (y)
+
+Type:
+y and press Enter.
+
+STEP-2 
+
+npm install
+
+This command:
+
+Reads the package.json file.
+Downloads all required dependencies.
+Creates the node_modules folder.
+Generates a package-lock.json file.
+
+Once it finishes successfully, start the development server with:
+
+
+STEP-3
+-----------
+Yes. After npm install completes successfully, run:
+
+npm run dev
+
+If everything is set up correctly, you'll see output similar to:
+> cineverse@0.0.0 dev
+> vite
+
+  VITE v7.x.x  ready in 300 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.x.x:5173/
+  ➜  press h + enter to show help
+
+  Then:
+
+Hold Ctrl and click http://localhost:5173/, or
+Copy and paste http://localhost:5173/ into your browser.
+
+You should see the default React + Vite page.
+
+STEP-4
+-----------
+
+mkdir src\pages, src\components, src\styles
+
+is intended to create three new folders inside the src directory.
+
+Here's what each part means:
+
+mkdir → Make Directory (creates a folder).
+src\pages → Creates a folder named pages inside src.
+src\components → Creates a folder named components inside src.
+src\styles → Creates a folder named styles inside src.
+
+After creating them, your project structure becomes:
+
+src/
+├── assets/
+├── components/
+├── pages/
+├── styles/
+├── App.jsx
+├── main.jsx
+
+Why do we create these folders?
+----------------------------------
+pages/ → Stores complete pages/screens of your app.
+Example: Home.jsx, Movies.jsx, Booking.jsx
+components/ → Stores reusable UI pieces.
+Example: Navbar.jsx, Hero.jsx, MovieCard.jsx, Footer.jsx
+styles/ → Stores CSS files.
+Example: navbar.css, hero.css, home.css
+
+STEP-5
+-----------
+PS C:\Users\user\OneDrive\Desktop\cineverse\src> tree /f
+Folder PATH listing
+Volume serial number is 000000FA 0CFA:74B4
+C:.
+│   App.css
+│   App.jsx
+│   index.css
+│   main.jsx
+│   
+├───assets
+│       hero.png
+│       react.svg
+│       vite.svg
+│
+├───components
+├───pages
+└───styles
+        global.css
+
+PS C:\Users\user\OneDrive\Desktop\cineverse\src> 

@@ -1,0 +1,106 @@
+.tv-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0f0f18;
+    color: #fff;
+    padding: 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+.tv-card {
+    background-color: #1a1a24;
+    border-radius: 16px;
+    padding: 32px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.tv-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 6px;
+}
+
+.success-card::before {
+    background: #00d26a;
+}
+
+.error-card::before {
+    background: #e63946;
+}
+
+.tv-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.tv-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.tv-badge {
+    background: #00d26a22;
+    color: #00d26a;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.tv-content {
+    margin-bottom: 24px;
+}
+
+.tv-movie {
+    margin: 0 0 4px 0;
+    font-size: 1.25rem;
+    color: #fff;
+}
+
+.tv-cinema {
+    margin: 0 0 20px 0;
+    color: #a9a6b8;
+    font-size: 0.95rem;
+}
+
+.tv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.tv-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.tv-item label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #a9a6b8;
+    margin-bottom: 4px;
+}
+
+.tv-item span {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+.tv-footer {
+    text-align: center;
+    padding-top: 16px;
+    border-top: 1px dashed #ffffff22;
+    color: #a9a6b8;
+    font-size: 0.9rem;
+}

@@ -1,0 +1,120 @@
+================================================================================
+                      CINEVERSE - BACKEND DOCUMENTATION
+================================================================================
+
+1. WHAT WE USED (Backend Technology Stack)
+--------------------------------------------------------------------------------
+- Language & Core Framework: Python 3.x with Django 6.0 Framework.
+- Web API Framework: Django REST Framework (DRF) for building robust, scalable RESTful APIs.
+- Authentication Security: SimpleJWT (rest_framework_simplejwt) providing JSON Web Token (JWT) based stateless authentication.
+- Database: MySQL Server (Database Name: `cineverse_db`, connected via django.db.backends.mysql).
+- Cross-Origin Resource Sharing: Django CORS Headers (corsheaders) enabling seamless communication between frontend (Port 5173) and backend (Port 8000).
+- Configuration Management: django-environ for environment key management (.env file).
+- Architecture Pattern: Model-View-Serializer (MVS) architecture under Django REST Framework.
+
+
+2. API ENDPOINTS AND WHAT THEY DO
+--------------------------------------------------------------------------------
+A) AUTHENTICATION ENDPOINTS (users app - /api/auth/):
+   - POST /api/auth/register/
+     * View: RegisterView (generics.CreateAPIView)
+     * Purpose: Accepts username, email, and password. Hash-encrypts password and creates a new Django User account.
+   - POST /api/auth/login/
+     * View: TokenObtainPairView (SimpleJWT)
+     * Purpose: Validates username & password. On success, returns an `access` token (7 days validity) and a `refresh` token (30 days validity).
+   - POST /api/auth/login/refresh/
+     * View: TokenRefreshView (SimpleJWT)
+     * Purpose: Accepts a valid refresh token and issues a fresh access token without requiring re-login.
+
+B) BOOKING ENDPOINTS (api app - /api/bookings/):
+   - GET /api/bookings/
+     * ViewSet: BookingViewSet (get_queryset)
+     * Purpose: Retrieves all ticket bookings created by the currently authenticated user. Protected by `IsAuthenticated` permission.
+   - POST /api/bookings/
+     * ViewSet: BookingViewSet (perform_create)
+     * Purpose: Accepts booking payload (tmdb_movie_id, movie_title, movie_poster, cinema, show_date, show_time, format, seat_numbers, amount, booking_code), automatically links it to `request.user`, and saves to MySQL database.
+
+C) WATCHLIST ENDPOINTS (api app - /api/watchlist/):
+   - GET /api/watchlist/
+     * Returns user's saved watchlist movies.
+   - POST /api/watchlist/
+     * Saves a movie ID to user's watchlist.
+   - DELETE /api/watchlist/remove_by_tmdb/
+     * Custom action `@action(methods=['delete'])` to remove a specific movie from watchlist by TMDB ID.
+
+
+3. DATABASE MODELS & SCHEMA (api/models.py & users)
+--------------------------------------------------------------------------------
+1) User Model (built-in Django Auth User):
+   - Fields: id, username, email, password (hashed).
+
+2) Booking Model (api.Booking):
+   - user: ForeignKey (Django User, CASCADE on delete, related_name='bookings')
+   - tmdb_movie_id: Integer (ID of movie from TMDB API)
+   - movie_title: CharField(max_length=255)
+   - movie_poster: CharField(max_length=255)
+   - cinema: CharField(max_length=255) (e.g. "PVR Director's Cut")
+   - show_date: DateTimeField (Selected date & time)
+   - show_time: CharField(max_length=50) (e.g. "07:00 PM")
+   - format: CharField(max_length=50) (e.g. "IMAX 3D", "2D")
+   - seat_numbers: CharField(max_length=255) (Comma-separated seats e.g. "C4, C5")
+   - amount: Integer (Total price in INR)
+   - booking_code: CharField(max_length=50) (Unique identifier e.g. "CV-748291")
+   - status: CharField(max_length=50, default='upcoming') (upcoming / past / cancelled)
+   - created_at: DateTimeField(auto_now_add=True)
+
+3) Watchlist Model (api.Watchlist):
+   - user: ForeignKey (Django User, CASCADE on delete)
+   - tmdb_movie_id: Integer
+   - added_at: DateTimeField(auto_now_add=True)
+   - Unique Constraint: unique_together = ('user', 'tmdb_movie_id')
+
+
+4. HOW THE BACKEND WORKS (Request Lifecycle & Security Flow)
+--------------------------------------------------------------------------------
+1. Request Ingestion: Frontend sends an HTTP request to `http://localhost:8000/api/bookings/` with an HTTP Authorization header containing `Bearer <access_token>`.
+2. CORS Validation: `CorsMiddleware` checks the requesting domain and permits the request.
+3. JWT Authentication: `JWTAuthentication` class parses the Bearer token, verifies its cryptographic signature using Django's `SECRET_KEY`, and checks token expiration. If valid, Django attaches the decoded user object directly to `request.user`.
+4. Authorization & Permission: `permission_classes = [IsAuthenticated]` checks if `request.user` is valid. If unauthenticated, returns HTTP 401 Unauthorized.
+5. Business Logic & ORM Execution: The `BookingViewSet` filters database records matching `request.user`.
+6. Serialization & Response: Django REST Framework's `BookingSerializer` converts complex Python model instances into formatted JSON data and returns HTTP 200 OK or 201 Created.
+
+
+5. HOW TO RUN THE BACKEND
+--------------------------------------------------------------------------------
+1. Ensure MySQL Server is running on port 3306 and create database `cineverse_db`:
+   CREATE DATABASE cineverse_db;
+2. Open terminal and navigate to backend folder: `c:\Users\user\OneDrive\Desktop\cineverse\backend_core`
+3. Activate Python virtual environment:
+   ..\venv\Scripts\activate
+4. Install backend dependencies (if needed):
+   pip install django djangorestframework djangorestframework-simplejwt django-cors-headers mysqlclient django-environ
+5. Apply database migrations:
+   python manage.py migrate
+6. Start Django development server:
+   python manage.py runserver
+7. Backend will run live at: http://127.0.0.1:8000/
+
+
+================================================================================
+                      BACKEND PRESENTATION SCRIPT
+      (Read this during your presentation for the Backend section!)
+================================================================================
+
+"Hello everyone! Now I will present the Backend architecture of CineVerse.
+
+Our backend is powered by Python 3 and Django 6.0, using Django REST Framework to expose robust and secure API endpoints. For database management, we integrated MySQL server under the name `cineverse_db`, connected via Django's object-relational mapping, or ORM.
+
+Let's discuss our security and authentication mechanism. We chose stateless JWT authentication using SimpleJWT. When a user registers or logs in via `/api/auth/login/`, Django authenticates their credentials and returns an encrypted access token valid for 7 days and a refresh token valid for 30 days. The frontend attaches this token as a Bearer header for all protected operations, such as creating or retrieving movie bookings. This ensures that user sessions are completely secure and stateless.
+
+Now, looking at our data models:
+Our primary data model is the `Booking` model. It captures complete ticket information including the movie's TMDB ID, title, poster image URL, chosen theater, show date, show time, format such as IMAX 3D, selected seat numbers stored as comma-separated values, total booking amount, and a unique booking confirmation code.
+
+Every time a user books a movie ticket, Django REST Framework validates the incoming payload using serializers, automatically attaches the authenticated user's profile to the booking, and commits the transaction directly to MySQL.
+
+To allow seamless communication with our React frontend running on port 5173, we configured Django CORS Headers middleware to handle cross-origin requests securely.
+
+In short, our backend is lightweight, highly secure, fast, and structured cleanly to handle all user authentication and booking transactions reliably.
+
+Thank you!"
+================================================================================
