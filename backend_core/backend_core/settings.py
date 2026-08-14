@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'backend_core.wsgi.application'
 
 DB_ENGINE = env('DB_ENGINE', default='sqlite')
 
-if DB_ENGINE == 'mysql' or env('DB_HOST', default=''):
+if DB_ENGINE == 'mysql':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
