@@ -1,0 +1,7 @@
+Django>=5.0,<6.1
+django-environ
+djangorestframework
+djangorestframework-simplejwt
+django-cors-headers
+gunicorn
+razorpay
