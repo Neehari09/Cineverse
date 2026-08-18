@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // This is the base URL of your Django server
 const API = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000/api/',
+    baseURL: import.meta.env.VITE_BACKEND_URL || 'https://cineverse-backend-1k9l.onrender.com/api/',
 });
 
 // Register a new user
