@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // This is the base URL of your Django server
 const API = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api/', // Changed to 127.0.0.1
+    baseURL: import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000/api/',
 });
 
 // Register a new user
