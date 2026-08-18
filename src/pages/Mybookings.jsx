@@ -2,7 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QRCode from 'react-qr-code';
 import QRCodeLib from 'qrcode';
-import './MyBookings.css';
+import './Mybookings.css';
 import { getPosterUrl } from '../api/tmdb';
 import Navbar from '../components/Navbar';
 import { getBookings } from '../api/backend';
