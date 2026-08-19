@@ -4,7 +4,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import Navbar from '../components/Navbar';
 import './Login.css';
 
-const BACKEND_URL = "http://localhost:8000/api";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://cineverse-backend-1k9l.onrender.com/api";
 
 export default function Login() {
     const [step, setStep] = useState('phone'); // 'phone' | 'otp' | 'email' | 'email_otp'
