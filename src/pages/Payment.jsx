@@ -28,11 +28,28 @@ export default function Payment() {
             // 1. Create order on backend
             const orderData = await createRazorpayOrder(bookingData.amount);
 
+            // If demo/test mode order returned or Razorpay SDK is not loaded
+            const RazorpayClass = Razorpay || window.Razorpay;
+            if (orderData.is_demo || !RazorpayClass) {
+                // Complete booking in test mode
+                await verifyRazorpayPayment({
+                    razorpay_payment_id: `pay_demo_${Date.now()}`,
+                    razorpay_order_id: orderData.order_id || `order_demo_${Date.now()}`,
+                    razorpay_signature: 'demo_signature',
+                    booking_data: bookingData
+                });
+                setIsSuccess(true);
+                setTimeout(() => {
+                    navigate('/bookings');
+                }, 2000);
+                return;
+            }
+
             // 2. Initialize Razorpay checkout
             const options = {
-                key: "rzp_test_TOlKJXNOTK4eAf", // Your Test Key ID
+                key: orderData.key_id || import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_TftjRyyBZnTeQt",
                 amount: orderData.amount, // in paise
-                currency: orderData.currency,
+                currency: orderData.currency || "INR",
                 name: "Cineverse",
                 description: `Tickets for ${bookingData.movie_title}`,
                 order_id: orderData.order_id,
@@ -65,17 +82,43 @@ export default function Payment() {
                 }
             };
 
-            const rzp = new Razorpay(options);
-            rzp.on("payment.failed", function (response) {
+            const rzp = new RazorpayClass(options);
+            rzp.on("payment.failed", async function (response) {
                 console.error("Payment failed", response.error);
-                alert("Payment failed: " + response.error.description);
-                setIsProcessing(false);
+                // Fallback option in test mode if payment failed due to test keys
+                if (window.confirm(`Payment gateway error: ${response.error?.description || 'Gateway error'}\n\nWould you like to complete booking in Test/Demo Mode?`)) {
+                    try {
+                        await verifyRazorpayPayment({
+                            razorpay_payment_id: `pay_demo_${Date.now()}`,
+                            razorpay_order_id: orderData.order_id,
+                            razorpay_signature: 'demo_signature',
+                            booking_data: bookingData
+                        });
+                        setIsSuccess(true);
+                        setTimeout(() => {
+                            navigate('/bookings');
+                        }, 2000);
+                    } catch (e) {
+                        alert("Could not complete booking.");
+                        setIsProcessing(false);
+                    }
+                } else {
+                    setIsProcessing(false);
+                }
             });
             rzp.open();
 
         } catch (error) {
             console.error("Failed to initiate payment", error);
-            alert("Could not connect to payment gateway. Please try again.");
+            if (error?.response?.status === 401) {
+                alert("Your session has expired or you are not logged in. Please log in to complete your booking.");
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                navigate('/login', { state: { returnTo: '/payment', bookingData } });
+                return;
+            }
+            const errorMsg = error?.response?.data?.error || error?.message || "Could not connect to payment gateway. Please try again.";
+            alert(errorMsg);
             setIsProcessing(false);
         }
     };

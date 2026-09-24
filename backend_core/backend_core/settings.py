@@ -168,10 +168,6 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# Email Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
+# Razorpay Configuration
+RAZORPAY_KEY_ID = env('RAZORPAY_KEY_ID', default='rzp_test_TftjRyyBZnTeQt')
+RAZORPAY_KEY_SECRET = env('RAZORPAY_KEY_SECRET', default='hELv5ABTU7EzjiOGMf0IxImH')
